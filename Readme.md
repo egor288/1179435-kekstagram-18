@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
-* Студент: [Egor Pisarev](https://up.htmlacademy.ru/javascript/18/user/1179435).
-* Наставник: `Неизвестно`.
+- Студент: [Egor Pisarev](https://up.htmlacademy.ru/javascript/18/user/1179435).
+- Наставник: Владимир Шишлянников.
 
 ---
 
