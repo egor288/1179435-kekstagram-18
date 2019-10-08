@@ -36,13 +36,13 @@ var similarPostTemplate = document
     .querySelector('#picture')
     .content.querySelector('.picture');
 
-var renderPost = function (post) {
+var renderPost = function (posts) {
   var postElement = similarPostTemplate.cloneNode(true);
 
-  postElement.querySelector('.picture__img').src = post.url;
+  postElement.querySelector('.picture__img').src = posts.url;
   postElement.querySelector('.picture__comments').textContent =
-        post.comments.length;
-  postElement.querySelector('.picture__likes').textContent = post.likes;
+        posts.comments.length;
+  postElement.querySelector('.picture__likes').textContent = posts.likes;
 
   return postElement;
 };
