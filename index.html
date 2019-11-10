@@ -255,13 +255,7 @@
                   </fieldset>
 
                   <!-- Кнопка для отправки данных на сервер -->
-                  <button
-                    type="submit"
-                    class="img-upload__submit"
-                    id="upload-submit"
-                    onsubmit="return false;"
-                    onclick="validateOnSubmit()"
-                  >
+                  <button class="img-upload__submit" id="upload-submit">
                     Опубликовать
                   </button>
                 </div>
@@ -477,6 +471,9 @@
         Загружаем...
       </div>
     </template>
+    <script src="js/renderPosts.js"></script>
+    <script src="js/mainMenu.js"></script>
+    <script src="js/debounce.js"></script>
     <script src="js/main.js"></script>
     <script src="js/XMLHttpRequest.js"></script>
     <script src="js/data.js"></script>
