@@ -3,37 +3,59 @@
   var random = document.querySelector('#filter-random');
   var discussed = document.querySelector('#filter-discussed');
   var popular = document.querySelector('#filter-popular');
+  var newArr;
 
   popular.addEventListener('click', popularDisplay);
   random.addEventListener('click', randomDisplay);
-  discussed.addEventListener('click', discussedDisplau);
-
-  function clearPosts() {
-    var picturesContaner = document.querySelector('.pictures');
-    var picturesInPage = document.querySelectorAll('.picture');
-    for (var i = 0; i <= window.postsArray.length - 1; i++) {
-      picturesContaner.removeChild(picturesInPage[i]);
-    }
-  }
+  discussed.addEventListener('click', discussedDisplay);
 
   function popularDisplay() {
     random.classList.remove('img-filters__button--active');
     discussed.classList.remove('img-filters__button--active');
     popular.classList.add('img-filters__button--active');
-    clearPosts();
+    window.renderPosts(window.postsArray);
   }
 
   function randomDisplay() {
     popular.classList.remove('img-filters__button--active');
     discussed.classList.remove('img-filters__button--active');
     random.classList.add('img-filters__button--active');
-    clearPosts();
+    sortByRandom();
   }
 
-  function discussedDisplau() {
+  function discussedDisplay() {
     random.classList.remove('img-filters__button--active');
     popular.classList.remove('img-filters__button--active');
     discussed.classList.add('img-filters__button--active');
-    clearPosts();
+    sortByComments();
+  }
+
+  function sortByComments() {
+    newArr = [];
+    newArr = window.postsArray.slice(0);
+    newArr.sort(function (a, b) {
+      return b.comments.length - a.comments.length;
+    });
+    window.renderPosts(newArr);
+  }
+
+  function sortByRandom() {
+    newArr = [];
+    newArr = window.postsArray.slice(0);
+
+    var currentIndex = newArr.length;
+    var temporaryValue;
+    var randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      temporaryValue = newArr[currentIndex];
+      newArr[currentIndex] = newArr[randomIndex];
+      newArr[randomIndex] = temporaryValue;
+    }
+
+    window.renderPosts(newArr.slice(0, 10));
   }
 })();
