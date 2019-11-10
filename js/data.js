@@ -75,4 +75,5 @@
       onSuccessAjax,
       onErrorAjax
   );
+  window.postsArray = postsArray;
 })();

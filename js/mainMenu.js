@@ -11,8 +11,9 @@
   function clearPosts() {
     var picturesContaner = document.querySelector('.pictures');
     var picturesInPage = document.querySelectorAll('.picture');
-    for (var i = 0; i <= postsArray.length - 1; i++)
-      {picturesContaner.removeChild(picturesInPage[i]);}
+    for (var i = 0; i <= window.postsArray.length - 1; i++) {
+      picturesContaner.removeChild(picturesInPage[i]);
+    }
   }
 
   function popularDisplay() {
