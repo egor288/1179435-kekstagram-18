@@ -1,13 +1,12 @@
 'use strict';
 (function () {
-  var WIDTH_OF_SLIDER = 495;
   var previewImg = document.querySelector('.img-upload__preview');
   var oldposX;
   var oldleft;
   var selectedFilter;
 
   function pxToNumber(styleLeft) {
-    return parseInt(styleLeft.substr(0, styleLeft.length - 2));
+    return parseInt(styleLeft.substr(0, styleLeft.length - 2), 10);
   }
 
   var moveListener = function (event) {
