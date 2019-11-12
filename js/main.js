@@ -6,4 +6,9 @@
   yourPicture.addEventListener('change', function () {
     form.classList.remove('hidden');
   });
+  document
+    .querySelector('#upload-cancel')
+    .addEventListener('click', function () {
+      form.classList.add('hidden');
+    });
 })();

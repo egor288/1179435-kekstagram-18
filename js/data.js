@@ -5,6 +5,7 @@
     postsArray = dataArr.slice(0);
     window.postsArray = postsArray;
     window.renderPosts(dataArr);
+    window.zoomPicture();
   };
 
   var errorTemplate = document
