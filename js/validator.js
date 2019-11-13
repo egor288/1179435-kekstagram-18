@@ -3,7 +3,6 @@
   var counter = 0;
   var hashtagInput = document.querySelector('.text__hashtags');
 
-  // reportValidity()
   function validateSpaceLost(arr) {
     for (var i = 0; i <= arr.length - 1; i++) {
       counter = 0;
@@ -39,7 +38,6 @@
         }
       }
     }
-
     return true;
   }
 
@@ -49,7 +47,6 @@
     if (arr.length > 5) {
       return false;
     }
-
     // хэш-теги разделяются пробелами
     if (!validateSpaceLost(arr)) {
       return false;
@@ -81,11 +78,12 @@
 
   function validateOnSubmit(event) {
     event.preventDefault();
+    hashtagInput.setCustomValidity('');
     if (validate()) {
       hashtagInput.setCustomValidity('');
       uploadForm.submit();
     }
   }
 
-  uploadForm.addEventListener('submit', validateOnSubmit);
+  hashtagInput.addEventListener('change', validateOnSubmit);
 })();

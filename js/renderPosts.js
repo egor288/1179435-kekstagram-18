@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var postsArray = [];
   var post = {};
 
   function clearPosts() {
@@ -55,6 +54,7 @@
     similarListElement.appendChild(fragment);
     var picturesFilters = document.querySelector('.img-filters');
     picturesFilters.classList.remove('img-filters--inactive');
+    window.zoomPicture();
   }
 
   window.renderPosts = renderPosts;
