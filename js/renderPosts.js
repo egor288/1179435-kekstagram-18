@@ -35,20 +35,21 @@
       .querySelector('#picture')
       .content.querySelector('.picture');
 
-    var renderPost = function (posts) {
+    var renderPost = function (posts, i) {
       var postElement = similarPostTemplate.cloneNode(true);
 
       postElement.querySelector('.picture__img').src = posts.url;
       postElement.querySelector('.picture__comments').textContent =
         posts.comments.length;
       postElement.querySelector('.picture__likes').textContent = posts.likes;
+      postElement.tabIndex = i;
 
       return postElement;
     };
 
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < renderArr.length; i++) {
-      fragment.appendChild(renderPost(renderArr[i]));
+      fragment.appendChild(renderPost(renderArr[i], i));
     }
 
     similarListElement.appendChild(fragment);

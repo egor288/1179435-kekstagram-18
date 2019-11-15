@@ -1,11 +1,13 @@
 'use strict';
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 (function () {
   function getRandomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   function renderBigPicture(elem) {
-    console.log(elem);
     window.bigPicture = document.querySelector('.big-picture');
     var photo = window.bigPicture.querySelector('img');
     var likes = document.querySelector('.likes-count');
@@ -56,14 +58,45 @@
         var post = window.postsArray.filter(function (item) {
           return item.url === urlOfPost;
         });
-        console.log(post);
         renderBigPicture(post[0]);
+      });
+
+      allPictures[i].parentElement.addEventListener('keydown', function (evt) {
+        if (evt.keyCode === ENTER_KEYCODE) {
+          var urlOfPost = this.querySelector('img').src.substring(
+              this.querySelector('img').src.indexOf('photo')
+          );
+          var post = window.postsArray.filter(function (item) {
+            return item.url === urlOfPost;
+          });
+          renderBigPicture(post[0]);
+        }
       });
     }
     var cancelZoom = document.querySelector('#picture-cancel');
+
+    function onPopupEscPress(evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        return closePopup();
+      }
+      return null;
+    }
+
     cancelZoom.addEventListener('click', function () {
-      window.bigPicture.classList.add('hidden');
+      return closePopup();
     });
+
+    cancelZoom.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEYCODE) {
+        return closePopup();
+      }
+      return null;
+    });
+
+    function closePopup() {
+      window.bigPicture.classList.add('hidden');
+      document.removeEventListener('keydown', onPopupEscPress);
+    }
   }
   window.zoomPicture = zoomPicture;
 })();
