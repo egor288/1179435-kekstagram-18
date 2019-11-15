@@ -4,6 +4,7 @@
   var discussed = document.querySelector('#filter-discussed');
   var popular = document.querySelector('#filter-popular');
   var newArr;
+  var debouncedRenderPosts = window.debounce(window.renderPosts);
 
   popular.addEventListener('click', popularDisplay);
   random.addEventListener('click', randomDisplay);
@@ -13,7 +14,7 @@
     random.classList.remove('img-filters__button--active');
     discussed.classList.remove('img-filters__button--active');
     popular.classList.add('img-filters__button--active');
-    window.renderPosts(window.postsArray);
+    debouncedRenderPosts(window.postsArray);
   }
 
   function randomDisplay() {
@@ -36,7 +37,7 @@
     newArr.sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
-    window.renderPosts(newArr);
+    debouncedRenderPosts(newArr);
   }
 
   function sortByRandom() {
@@ -56,6 +57,6 @@
       newArr[randomIndex] = temporaryValue;
     }
 
-    window.renderPosts(newArr.slice(0, 10));
+    debouncedRenderPosts(newArr.slice(0, 10));
   }
 })();

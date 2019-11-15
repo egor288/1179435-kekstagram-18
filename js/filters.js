@@ -43,10 +43,9 @@
     var inputs = document.querySelectorAll('.effects__radio');
     var i = inputs.length;
     while (i--) {
-      if (inputs[i].checked === true) {
+      if (inputs[i].checked) {
         return inputs[i].id;
       }
-      return null;
     }
     return null;
   }
