@@ -35,7 +35,7 @@
       .querySelector('#picture')
       .content.querySelector('.picture');
 
-    var renderPost = function (posts, i) {
+    function renderPost(posts, i) {
       var postElement = similarPostTemplate.cloneNode(true);
 
       postElement.querySelector('.picture__img').src = posts.url;
@@ -45,7 +45,7 @@
       postElement.tabIndex = i;
 
       return postElement;
-    };
+    }
 
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < renderArr.length; i++) {

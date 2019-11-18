@@ -1,14 +1,15 @@
 'use strict';
 (function () {
   var yourPicture = document.querySelector('#upload-file');
-  var form = document.querySelector('.hidden');
+  window.form = document.querySelector('.hidden');
+  document.querySelector('.effect-level__pin').style.left = '0px';
 
   yourPicture.addEventListener('change', function () {
-    form.classList.remove('hidden');
+    window.form.classList.remove('hidden');
   });
   document
     .querySelector('#upload-cancel')
     .addEventListener('click', function () {
-      form.classList.add('hidden');
+      window.form.classList.add('hidden');
     });
 })();

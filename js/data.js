@@ -5,7 +5,6 @@
     postsArray = dataArr.slice(0);
     window.postsArray = postsArray;
     window.renderPosts(dataArr);
-    window.zoomPicture();
   };
 
   var errorTemplate = document
@@ -18,6 +17,11 @@
     var errorElement = errorTemplate.cloneNode(true);
     fragment.appendChild(errorElement);
     main.appendChild(fragment);
+    document
+      .querySelector('.error__button')
+      .addEventListener('click', function () {
+        main.removeChild(document.querySelector('.error'));
+      });
   };
 
   window.getAjaxData(

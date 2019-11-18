@@ -4,6 +4,7 @@
   var hashtagInput = document.querySelector('.text__hashtags');
 
   function validateSpaceLost(arr) {
+    debugger;
     for (var i = 0; i <= arr.length - 1; i++) {
       counter = 0;
       for (var j = 0; j <= arr[i].length - 1; j++) {
@@ -21,6 +22,7 @@
   }
 
   function validateHashtag(arr) {
+    debugger;
     for (var i = 0; i <= arr.length - 1; i++) {
       // максимальная длина одного хэш-тега 20 символов, включая решётку
       // хеш-тег не может состоять только из одной решётки
@@ -43,6 +45,7 @@
 
   // Функция возвращает false если массив не прошел валидацию
   function validateArray(arr) {
+    debugger;
     // нельзя указать больше пяти хэш-тегов
     if (arr.length > 5) {
       return false;
@@ -66,7 +69,7 @@
     }
 
     var hashtags = hashtagInput.value;
-    var hashtagsArr = hashtags.split('');
+    var hashtagsArr = hashtags.split(' ');
     if (!validateArray(hashtagsArr)) {
       hashtagInput.setCustomValidity('Не верные данные');
       return false;
@@ -77,13 +80,63 @@
   var uploadForm = document.querySelector('#upload-select-image');
 
   function validateOnSubmit(event) {
-    event.preventDefault();
-    hashtagInput.setCustomValidity('');
     if (validate()) {
+      event.preventDefault();
       hashtagInput.setCustomValidity('');
-      uploadForm.submit();
+      hashtagInput.setCustomValidity('');
+      return true;
     }
+    return false;
   }
+
+  function onSuccessSend() {
+    var successTemplate = document
+      .querySelector('#success')
+      .content.querySelector('.success');
+    window.form.classList.add('hidden');
+    var main = document.querySelector('main');
+    var fragment = document.createDocumentFragment();
+    var successElement = successTemplate.cloneNode(true);
+    fragment.appendChild(successElement);
+    main.appendChild(fragment);
+    document
+      .querySelector('.success__button')
+      .addEventListener('click', function () {
+        document.querySelector('.success').classList.add('hidden');
+      });
+  }
+
+  function onErrorSend() {
+    debugger;
+    var errorTemplate = document
+      .querySelector('#error')
+      .content.querySelector('.error');
+    window.form.classList.add('hidden');
+    var main = document.querySelector('main');
+    var fragment = document.createDocumentFragment();
+    var errorElement = null;
+    errorElement = errorTemplate.cloneNode(true);
+    fragment.appendChild(errorElement);
+    main.appendChild(fragment);
+    document
+      .querySelector('.error__button')
+      .addEventListener('click', function () {
+        main.removeChild(document.querySelector('.error'));
+      });
+  }
+
+  document
+    .querySelector('#upload-submit')
+    .addEventListener('click', function (event) {
+      event.preventDefault();
+      if (validateOnSubmit(event)) {
+        window.sendForm(
+            'https://js.dump.academy/kekstagram',
+            onSuccessSend,
+            onErrorSend
+        );
+      }
+    });
 
   hashtagInput.addEventListener('change', validateOnSubmit);
 })();
