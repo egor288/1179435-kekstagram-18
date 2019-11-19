@@ -29,7 +29,6 @@
 
   function sendForm(url, onSuccess, onError) {
     var formData = window.getFormData();
-    console.log(formData);
 
     var xhr = new XMLHttpRequest();
 

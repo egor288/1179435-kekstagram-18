@@ -4,7 +4,6 @@
   var hashtagInput = document.querySelector('.text__hashtags');
 
   function validateSpaceLost(arr) {
-    debugger;
     for (var i = 0; i <= arr.length - 1; i++) {
       counter = 0;
       for (var j = 0; j <= arr[i].length - 1; j++) {
@@ -22,7 +21,6 @@
   }
 
   function validateHashtag(arr) {
-    debugger;
     for (var i = 0; i <= arr.length - 1; i++) {
       // максимальная длина одного хэш-тега 20 символов, включая решётку
       // хеш-тег не может состоять только из одной решётки
@@ -45,7 +43,6 @@
 
   // Функция возвращает false если массив не прошел валидацию
   function validateArray(arr) {
-    debugger;
     // нельзя указать больше пяти хэш-тегов
     if (arr.length > 5) {
       return false;
@@ -77,8 +74,6 @@
     hashtagInput.setCustomValidity('');
     return true;
   }
-  var uploadForm = document.querySelector('#upload-select-image');
-
   function validateOnSubmit(event) {
     if (validate()) {
       event.preventDefault();
@@ -107,7 +102,6 @@
   }
 
   function onErrorSend() {
-    debugger;
     var errorTemplate = document
       .querySelector('#error')
       .content.querySelector('.error');

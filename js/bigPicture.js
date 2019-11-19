@@ -75,8 +75,10 @@ var ENTER_KEYCODE = 13;
     var allPictures = picturesContaner.querySelectorAll('.picture__img');
 
     for (var i = 0; i <= allPictures.length - 1; i++) {
-      allPictures[i].addEventListener('click', function () {
-        var urlOfPost = this.src.substring(this.src.indexOf('photo'));
+      allPictures[i].addEventListener('click', function (event) {
+        var urlOfPost = event.currentTarget.src.substring(
+            event.currentTarget.src.indexOf('photo')
+        );
         var post = window.postsArray.filter(function (item) {
           return item.url === urlOfPost;
         });
@@ -85,9 +87,11 @@ var ENTER_KEYCODE = 13;
 
       allPictures[i].parentElement.addEventListener('keydown', function (evt) {
         if (evt.keyCode === ENTER_KEYCODE) {
-          var urlOfPost = this.querySelector('img').src.substring(
-              this.querySelector('img').src.indexOf('photo')
-          );
+          var urlOfPost = evt.currentTarget
+            .querySelector('img')
+            .src.substring(
+                evt.currentTarget.querySelector('img').src.indexOf('photo')
+            );
           var post = window.postsArray.filter(function (item) {
             return item.url === urlOfPost;
           });
@@ -124,14 +128,14 @@ var ENTER_KEYCODE = 13;
 
   document
     .querySelector('.comments-loader')
-    .addEventListener('click', function () {
+    .addEventListener('click', function (event) {
       var result;
 
       if (
         parseInt(document.querySelector('#comments-show').textContent, 10) <
         parseInt(document.querySelector('.comments-count').textContent, 10)
       ) {
-        var urlOfPost = this.getAttribute('attr-postid');
+        var urlOfPost = event.currentTarget.getAttribute('attr-postid');
 
         var elem = window.postsArray.filter(function (item) {
           return item.url === urlOfPost;
