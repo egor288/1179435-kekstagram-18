@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var counter = 0;
-  var hashtagInput = document.querySelector('.text__hashtags');
+  var hashtagInputElement = document.querySelector('.text__hashtags');
 
   function validateSpaceLost(arr) {
     for (var i = 0; i <= arr.length - 1; i++) {
@@ -9,11 +9,10 @@
       for (var j = 0; j <= arr[i].length - 1; j++) {
         if (arr[i][j] === '#') {
           counter++;
+          if (counter > 1) {
+            return false;
+          }
         }
-      }
-
-      if (counter > 1) {
-        return false;
       }
     }
 
@@ -47,38 +46,42 @@
     if (arr.length > 5) {
       return false;
     }
+
     // хэш-теги разделяются пробелами
     if (!validateSpaceLost(arr)) {
       return false;
     }
+
     if (!validateHashtag(arr)) {
       return false;
     }
+
     return true;
   }
   // Метод, проверяющий валидность
 
   function validate() {
-    hashtagInput.setCustomValidity('');
-    if (hashtagInput.value === '') {
-      hashtagInput.setCustomValidity('');
+    hashtagInputElement.setCustomValidity('');
+    if (hashtagInputElement.value === '') {
+      hashtagInputElement.setCustomValidity('');
       return true;
     }
 
-    var hashtags = hashtagInput.value;
+    var hashtags = hashtagInputElement.value;
     var hashtagsArr = hashtags.split(' ');
     if (!validateArray(hashtagsArr)) {
-      hashtagInput.setCustomValidity('Не верные данные');
+      hashtagInputElement.setCustomValidity('Не верные данные');
       return false;
     }
-    hashtagInput.setCustomValidity('');
+    hashtagInputElement.setCustomValidity('');
     return true;
   }
+
   function validateOnSubmit(event) {
     if (validate()) {
       event.preventDefault();
-      hashtagInput.setCustomValidity('');
-      hashtagInput.setCustomValidity('');
+      hashtagInputElement.setCustomValidity('');
+      hashtagInputElement.setCustomValidity('');
       return true;
     }
     return false;
@@ -89,11 +92,11 @@
       .querySelector('#success')
       .content.querySelector('.success');
     window.form.classList.add('hidden');
-    var main = document.querySelector('main');
+    var mainElement = document.querySelector('main');
     var fragment = document.createDocumentFragment();
     var successElement = successTemplate.cloneNode(true);
     fragment.appendChild(successElement);
-    main.appendChild(fragment);
+    mainElement.appendChild(fragment);
     document
       .querySelector('.success__button')
       .addEventListener('click', function () {
@@ -106,16 +109,16 @@
       .querySelector('#error')
       .content.querySelector('.error');
     window.form.classList.add('hidden');
-    var main = document.querySelector('main');
+    var mainElement = document.querySelector('main');
     var fragment = document.createDocumentFragment();
     var errorElement = null;
     errorElement = errorTemplate.cloneNode(true);
     fragment.appendChild(errorElement);
-    main.appendChild(fragment);
+    mainElement.appendChild(fragment);
     document
       .querySelector('.error__button')
       .addEventListener('click', function () {
-        main.removeChild(document.querySelector('.error'));
+        mainElement.removeChild(document.querySelector('.error'));
       });
   }
 
@@ -124,7 +127,7 @@
     .addEventListener('click', function (event) {
       event.preventDefault();
       if (validateOnSubmit(event)) {
-        window.sendForm(
+        window.xmlHttpRequest.sendForm(
             'https://js.dump.academy/kekstagram',
             onSuccessSend,
             onErrorSend
@@ -132,5 +135,5 @@
       }
     });
 
-  hashtagInput.addEventListener('change', validateOnSubmit);
+  hashtagInputElement.addEventListener('change', validateOnSubmit);
 })();

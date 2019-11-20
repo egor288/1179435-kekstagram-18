@@ -1,50 +1,50 @@
 'use strict';
 (function () {
-  var random = document.querySelector('#filter-random');
-  var discussed = document.querySelector('#filter-discussed');
-  var popular = document.querySelector('#filter-popular');
-  var newArr;
+  var randomElement = document.querySelector('#filter-random');
+  var discussedElement = document.querySelector('#filter-discussed');
+  var popularElement = document.querySelector('#filter-popular');
+  var newPosts;
   var debouncedRenderPosts = window.debounce(window.renderPosts);
 
-  popular.addEventListener('click', popularDisplay);
-  random.addEventListener('click', randomDisplay);
-  discussed.addEventListener('click', discussedDisplay);
+  popularElement.addEventListener('click', onPopularClick);
+  randomElement.addEventListener('click', onRandomClick);
+  discussedElement.addEventListener('click', onDiscussedClick);
 
-  function popularDisplay() {
-    random.classList.remove('img-filters__button--active');
-    discussed.classList.remove('img-filters__button--active');
-    popular.classList.add('img-filters__button--active');
+  function onPopularClick() {
+    randomElement.classList.remove('img-filters__button--active');
+    discussedElement.classList.remove('img-filters__button--active');
+    popularElement.classList.add('img-filters__button--active');
     debouncedRenderPosts(window.postsArray);
   }
 
-  function randomDisplay() {
-    popular.classList.remove('img-filters__button--active');
-    discussed.classList.remove('img-filters__button--active');
-    random.classList.add('img-filters__button--active');
-    sortByRandom();
+  function onRandomClick() {
+    popularElement.classList.remove('img-filters__button--active');
+    discussedElement.classList.remove('img-filters__button--active');
+    randomElement.classList.add('img-filters__button--active');
+    sortPostsByRandom();
   }
 
-  function discussedDisplay() {
-    random.classList.remove('img-filters__button--active');
-    popular.classList.remove('img-filters__button--active');
-    discussed.classList.add('img-filters__button--active');
-    sortByComments();
+  function onDiscussedClick() {
+    randomElement.classList.remove('img-filters__button--active');
+    popularElement.classList.remove('img-filters__button--active');
+    discussedElement.classList.add('img-filters__button--active');
+    sortPostsByComments();
   }
 
-  function sortByComments() {
-    newArr = [];
-    newArr = window.postsArray.slice(0);
-    newArr.sort(function (a, b) {
+  function sortPostsByComments() {
+    newPosts = [];
+    newPosts = window.postsArray.slice(0);
+    newPosts.sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
-    debouncedRenderPosts(newArr);
+    debouncedRenderPosts(newPosts);
   }
 
-  function sortByRandom() {
-    newArr = [];
-    newArr = window.postsArray.slice(0);
+  function sortPostsByRandom() {
+    newPosts = [];
+    newPosts = window.postsArray.slice(0);
 
-    var currentIndex = newArr.length;
+    var currentIndex = newPosts.length;
     var temporaryValue;
     var randomIndex;
 
@@ -52,11 +52,11 @@
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
 
-      temporaryValue = newArr[currentIndex];
-      newArr[currentIndex] = newArr[randomIndex];
-      newArr[randomIndex] = temporaryValue;
+      temporaryValue = newPosts[currentIndex];
+      newPosts[currentIndex] = newPosts[randomIndex];
+      newPosts[randomIndex] = temporaryValue;
     }
 
-    debouncedRenderPosts(newArr.slice(0, 10));
+    debouncedRenderPosts(newPosts.slice(0, 10));
   }
 })();

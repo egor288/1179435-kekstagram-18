@@ -1,8 +1,10 @@
 'use strict';
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 
 (function () {
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
+  var bigPictureElement;
+
   function getRandomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -13,13 +15,13 @@ var ENTER_KEYCODE = 13;
 
   function addComments(elem2, i) {
     var counter = 0;
-    var result = [];
+    var results = [];
     var userComment = '';
 
     sliceComments(elem2.comments, i).forEach(function (element) {
       userComment +=
         '<li class="social__comment">' +
-        '<img src="img/avatar-' +
+        '<img class="social__picture" src="img/avatar-' +
         getRandomInRange(1, 6) +
         '.svg" alt="' +
         element.name +
@@ -31,36 +33,36 @@ var ENTER_KEYCODE = 13;
       counter++;
     });
 
-    result['counter'] = counter;
-    result['comments'] = userComment;
+    results['counter'] = counter;
+    results['comments'] = userComment;
 
-    return result;
+    return results;
   }
 
   function renderBigPicture(elem) {
-    window.bigPicture = document.querySelector('.big-picture');
-    var photo = window.bigPicture.querySelector('img');
-    var likes = document.querySelector('.likes-count');
-    var commentsOfPost = document.querySelector('.comments-count');
+    bigPictureElement = document.querySelector('.big-picture');
+    var photoElement = bigPictureElement.querySelector('img');
+    var likesElement = document.querySelector('.likes-count');
+    var commentsOfPostElement = document.querySelector('.comments-count');
 
-    var commentsUnderPhoto = document.querySelector('.social__comments');
+    var commentsUnderPhotoElement = document.querySelector('.social__comments');
     var allComments;
 
-    allComments = commentsUnderPhoto.querySelectorAll('li');
+    allComments = commentsUnderPhotoElement.querySelectorAll('li');
     allComments.forEach(function (comment) {
-      commentsUnderPhoto.removeChild(comment);
+      commentsUnderPhotoElement.removeChild(comment);
     });
 
-    window.bigPicture.classList.remove('hidden');
-    photo.src = elem.url;
-    likes.textContent = elem.likes;
-    commentsOfPost.textContent = elem.comments.length;
+    bigPictureElement.classList.remove('hidden');
+    photoElement.src = elem.url;
+    likesElement.textContent = elem.likes;
+    commentsOfPostElement.textContent = elem.comments.length;
     document.querySelector('#comments-show').textContent = sliceComments(
         elem.comments,
         0
     ).length;
 
-    commentsUnderPhoto.insertAdjacentHTML(
+    commentsUnderPhotoElement.insertAdjacentHTML(
         'beforeEnd',
         addComments(elem, 0)['comments']
     );
@@ -71,32 +73,37 @@ var ENTER_KEYCODE = 13;
   }
 
   function zoomPicture() {
-    var picturesContaner = document.querySelector('.pictures');
-    var allPictures = picturesContaner.querySelectorAll('.picture__img');
+    var picturesContanerElement = document.querySelector('.pictures');
+    var allPicturesElement = picturesContanerElement.querySelectorAll(
+        '.picture__img'
+    );
 
-    for (var i = 0; i <= allPictures.length - 1; i++) {
-      allPictures[i].addEventListener('click', function (event) {
+    allPicturesElement.forEach(function (element) {
+      element.addEventListener('click', function (event) {
         var urlOfPost = event.currentTarget.src.substring(
             event.currentTarget.src.indexOf('photo')
         );
-        var post = window.postsArray.filter(function (item) {
-          return item.url === urlOfPost;
-        });
+
+        var post = returnPostByUrl(urlOfPost);
         renderBigPicture(post[0]);
       });
 
-      allPictures[i].parentElement.addEventListener('keydown', function (evt) {
+      element.parentElement.addEventListener('keydown', function (evt) {
         if (evt.keyCode === ENTER_KEYCODE) {
           var urlOfPost = evt.currentTarget
             .querySelector('img')
             .src.substring(
                 evt.currentTarget.querySelector('img').src.indexOf('photo')
             );
-          var post = window.postsArray.filter(function (item) {
-            return item.url === urlOfPost;
-          });
+          var post = returnPostByUrl(urlOfPost);
           renderBigPicture(post[0]);
         }
+      });
+    });
+
+    function returnPostByUrl(urlOfPost) {
+      return window.postsArray.filter(function (item) {
+        return item.url === urlOfPost;
       });
     }
 
@@ -121,7 +128,7 @@ var ENTER_KEYCODE = 13;
     });
 
     function closePopup() {
-      window.bigPicture.classList.add('hidden');
+      bigPictureElement.classList.add('hidden');
       document.removeEventListener('keydown', onPopupEscPress);
     }
   }

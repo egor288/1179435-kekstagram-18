@@ -1,30 +1,36 @@
 'use strict';
 (function () {
-  var onSuccessAjax = function (dataArr) {
+  function onSuccessAjax(dataArr) {
     var postsArray = [];
     postsArray = dataArr.slice(0);
     window.postsArray = postsArray;
     window.renderPosts(dataArr);
-  };
+  }
 
   var errorTemplate = document
     .querySelector('#error')
     .content.querySelector('.error');
 
-  var onErrorAjax = function () {
-    var main = document.querySelector('main');
+  function onErrorAjax() {
+    var mainElement = document.querySelector('mainElement');
     var fragment = document.createDocumentFragment();
     var errorElement = errorTemplate.cloneNode(true);
     fragment.appendChild(errorElement);
-    main.appendChild(fragment);
+    mainElement.appendChild(fragment);
+
+    function onTryAgainClick() {
+      mainElement.removeChild(document.querySelector('.error'));
+      document
+        .querySelector('.error__button')
+        .removeEventListener('click', onTryAgainClick);
+    }
+
     document
       .querySelector('.error__button')
-      .addEventListener('click', function () {
-        main.removeChild(document.querySelector('.error'));
-      });
-  };
+      .addEventListener('click', onTryAgainClick);
+  }
 
-  window.getAjaxData(
+  window.xmlHttpRequest.getAjaxData(
       'https://js.dump.academy/kekstagram/data',
       onSuccessAjax,
       onErrorAjax

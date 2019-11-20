@@ -1,49 +1,49 @@
 'use strict';
 (function () {
-  var previewImg = document.querySelector('.img-upload__preview');
+  var previewImgElement = document.querySelector('.img-upload__preview');
   var oldposX;
   var oldleft;
   var selectedFilter;
-  var zoomBig = document.querySelector('.scale__control--bigger');
-  var zoomSmall = document.querySelector('.scale__control--smaller');
-  var zoomValue = document.querySelector('.scale__control--value');
-  zoomValue.value = 100 + '%';
+  var zoomBigElement = document.querySelector('.scale__control--bigger');
+  var zoomSmallElement = document.querySelector('.scale__control--smaller');
+  var zoomValueElement = document.querySelector('.scale__control--value');
+  zoomValueElement.value = 100 + '%';
 
-  zoomBig.addEventListener('click', changeZoomBig);
-  zoomSmall.addEventListener('click', changeZoomSmall);
+  zoomBigElement.addEventListener('click', onZoomPlusClick);
+  zoomSmallElement.addEventListener('click', onZoomMinusClick);
 
-  function valueToNum(str) {
+  function convertValueToNum(str) {
     return parseInt(str.substr(0, str.length - 1), 10);
   }
 
-  function changeZoomBig() {
+  function onZoomPlusClick() {
     var zoomButton = document.querySelector('.scale__control--value');
-    zoomValue = valueToNum(zoomButton.value);
-    if (zoomValue < 100) {
-      var newValue = zoomValue + 25;
+    zoomValueElement = convertValueToNum(zoomButton.value);
+    if (zoomValueElement < 100) {
+      var newValue = zoomValueElement + 25;
       zoomButton.value = newValue.toString() + '%';
       document.querySelector('.img-upload__preview').style =
         'transform: scale(' + (newValue / 100).toString() + ')';
     }
   }
 
-  function changeZoomSmall() {
+  function onZoomMinusClick() {
     var zoomButton = document.querySelector('.scale__control--value');
-    zoomValue = valueToNum(zoomButton.value);
-    if (zoomValue > 25) {
-      var newValue = zoomValue - 25;
+    zoomValueElement = convertValueToNum(zoomButton.value);
+    if (zoomValueElement > 25) {
+      var newValue = zoomValueElement - 25;
       zoomButton.value = newValue.toString() + '%';
       document.querySelector('.img-upload__preview').style =
         'transform: scale(' + (newValue / 100).toString() + ')';
     }
   }
 
-  function pxToNumber(styleLeft) {
+  function convertPxToNumber(styleLeft) {
     return parseInt(styleLeft.substr(0, styleLeft.length - 2), 10);
   }
 
   var moveListener = function (event) {
-    var newpos = event.clientX + pxToNumber(oldleft) - oldposX; // - oldpos;
+    var newpos = event.clientX + convertPxToNumber(oldleft) - oldposX; // - oldpos;
 
     if (newpos < 0) {
       newpos = 0;
@@ -55,7 +55,7 @@
 
     deepOfEffect.style.left = newpos + 'px';
 
-    previewImg.style.filter = changeFilter(selectedFilter, newpos);
+    previewImgElement.style.filter = changeFilter(selectedFilter, newpos);
   };
 
   var deepOfEffect = document.querySelector('.effect-level__pin');
@@ -87,37 +87,38 @@
     if (filterValue === 'effect-none') {
       return '';
     } else if (filterValue === 'effect-chrome') {
-      return filterChrome(sliderLeft);
+      return changeFilterChrome(sliderLeft);
     } else if (filterValue === 'effect-sepia') {
-      return filterSepia(sliderLeft);
+      return changeFilterSepia(sliderLeft);
     } else if (filterValue === 'effect-marvin') {
-      return filterMarvin(sliderLeft);
+      return changeFilterMarvin(sliderLeft);
     } else if (filterValue === 'effect-phobos') {
-      return filterBlur(sliderLeft);
+      return changeFilterBlur(sliderLeft);
     } else if (filterValue === 'effect-heat') {
-      return filterBritness(sliderLeft);
+      return changeFilterBritness(sliderLeft);
     }
     return null;
   }
 
-  function filterChrome(sliderLeft) {
+  function changeFilterChrome(sliderLeft) {
     return 'grayscale(' + (sliderLeft / 453).toString() + ')';
   }
 
-  function filterSepia(sliderLeft) {
+  function changeFilterSepia(sliderLeft) {
     return 'sepia(' + (sliderLeft / 453).toString() + ')';
   }
 
-  function filterMarvin(sliderLeft) {
+  function changeFilterMarvin(sliderLeft) {
     return 'invert(' + Math.round((sliderLeft / 453) * 100).toString() + '%)';
   }
 
-  function filterBlur(sliderLeft) {
+  function changeFilterBlur(sliderLeft) {
     return 'blur(' + ((sliderLeft / 453) * 3).toString() + 'px)';
   }
 
-  function filterBritness(sliderLeft) {
+  function changeFilterBritness(sliderLeft) {
     return 'brightness(' + ((sliderLeft / 453) * 2 + 1).toString() + ')';
   }
+
   window.getInputWithValue = getInputWithValue;
 })();
