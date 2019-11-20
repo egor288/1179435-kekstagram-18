@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var mainElement = document.querySelector('main');
+
   var counter = 0;
   var hashtagInputElement = document.querySelector('.text__hashtags');
 
@@ -87,21 +89,30 @@
     return false;
   }
 
+  function onSuccessButtonClick() {
+    document
+      .querySelector('.success__button')
+      .removeEventListener('click', onSuccessButtonClick);
+    mainElement.removeChild(document.querySelector('.success'));
+  }
+
   function onSuccessSend() {
     var successTemplate = document
       .querySelector('#success')
       .content.querySelector('.success');
     window.form.classList.add('hidden');
-    var mainElement = document.querySelector('main');
     var fragment = document.createDocumentFragment();
     var successElement = successTemplate.cloneNode(true);
     fragment.appendChild(successElement);
     mainElement.appendChild(fragment);
     document
       .querySelector('.success__button')
-      .addEventListener('click', function () {
-        document.querySelector('.success').classList.add('hidden');
-      });
+      .addEventListener('click', onSuccessButtonClick);
+  }
+
+  function onErrorButtonClick() {
+    mainElement.removeEventListener('click', onErrorButtonClick);
+    mainElement.removeChild(document.querySelector('.error'));
   }
 
   function onErrorSend() {
@@ -109,7 +120,6 @@
       .querySelector('#error')
       .content.querySelector('.error');
     window.form.classList.add('hidden');
-    var mainElement = document.querySelector('main');
     var fragment = document.createDocumentFragment();
     var errorElement = null;
     errorElement = errorTemplate.cloneNode(true);
@@ -117,9 +127,7 @@
     mainElement.appendChild(fragment);
     document
       .querySelector('.error__button')
-      .addEventListener('click', function () {
-        mainElement.removeChild(document.querySelector('.error'));
-      });
+      .addEventListener('click', onErrorButtonClick);
   }
 
   document

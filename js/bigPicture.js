@@ -86,6 +86,16 @@
 
         var post = returnPostByUrl(urlOfPost);
         renderBigPicture(post[0]);
+
+        document.addEventListener('keydown', onDocumentEscPress);
+
+        cancelZoom.addEventListener('click', closePopup);
+
+        cancelZoom.addEventListener('keydown', onCancelButtonEnterPress);
+
+        document
+          .querySelector('.comments-loader')
+          .addEventListener('click', onLoadButtonClick);
       });
 
       element.parentElement.addEventListener('keydown', function (evt) {
@@ -109,63 +119,72 @@
 
     var cancelZoom = document.querySelector('#picture-cancel');
 
-    function onPopupEscPress(evt) {
+    function onDocumentEscPress(evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        return closePopup();
+        closePopup();
+        cancelZoom.removeEventListener('keydown', onCancelButtonEnterPress);
+        cancelZoom.removeEventListener('keydown', onDocumentEscPress);
+        cancelZoom.removeEventListener('click', closePopup);
+        document
+          .querySelector('.comments-loader')
+          .removeEventListener('click', onLoadButtonClick);
       }
-      return null;
     }
 
-    cancelZoom.addEventListener('click', function () {
-      return closePopup();
-    });
-
-    cancelZoom.addEventListener('keydown', function (evt) {
+    function onCancelButtonEnterPress(evt) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        return closePopup();
+        closePopup();
+        cancelZoom.removeEventListener('keydown', onCancelButtonEnterPress);
+        cancelZoom.removeEventListener('keydown', onDocumentEscPress);
+        cancelZoom.removeEventListener('click', closePopup);
+        document
+          .querySelector('.comments-loader')
+          .removeEventListener('click', onLoadButtonClick);
       }
-      return null;
-    });
+    }
 
     function closePopup() {
       bigPictureElement.classList.add('hidden');
-      document.removeEventListener('keydown', onPopupEscPress);
+      cancelZoom.removeEventListener('keydown', onCancelButtonEnterPress);
+      cancelZoom.removeEventListener('keydown', onDocumentEscPress);
+      cancelZoom.removeEventListener('click', closePopup);
+      document
+        .querySelector('.comments-loader')
+        .removeEventListener('click', onLoadButtonClick);
     }
   }
 
-  document
-    .querySelector('.comments-loader')
-    .addEventListener('click', function (event) {
-      var result;
+  function onLoadButtonClick(event) {
+    var result;
 
-      if (
-        parseInt(document.querySelector('#comments-show').textContent, 10) <
-        parseInt(document.querySelector('.comments-count').textContent, 10)
-      ) {
-        var urlOfPost = event.currentTarget.getAttribute('attr-postid');
+    if (
+      parseInt(document.querySelector('#comments-show').textContent, 10) <
+      parseInt(document.querySelector('.comments-count').textContent, 10)
+    ) {
+      var urlOfPost = event.currentTarget.getAttribute('attr-postid');
 
-        var elem = window.postsArray.filter(function (item) {
-          return item.url === urlOfPost;
-        });
+      var elem = window.postsArray.filter(function (item) {
+        return item.url === urlOfPost;
+      });
 
-        result = addComments(
-            elem[0],
-            parseInt(document.querySelector('#comments-show').textContent, 10)
-        );
+      result = addComments(
+          elem[0],
+          parseInt(document.querySelector('#comments-show').textContent, 10)
+      );
 
-        var oldCounter = parseInt(
-            document.querySelector('#comments-show').textContent,
-            10
-        );
+      var oldCounter = parseInt(
+          document.querySelector('#comments-show').textContent,
+          10
+      );
 
-        document.querySelector('#comments-show').textContent =
-          oldCounter + result['counter'];
+      document.querySelector('#comments-show').textContent =
+        oldCounter + result['counter'];
 
-        document
-          .querySelector('.social__comments')
-          .insertAdjacentHTML('beforeEnd', result['comments']);
-      }
-    });
+      document
+        .querySelector('.social__comments')
+        .insertAdjacentHTML('beforeEnd', result['comments']);
+    }
+  }
 
   window.zoomPicture = zoomPicture;
 })();

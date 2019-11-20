@@ -12,17 +12,17 @@
     .content.querySelector('.error');
 
   function onErrorAjax() {
-    var mainElement = document.querySelector('mainElement');
+    var mainElement = document.querySelector('main');
     var fragment = document.createDocumentFragment();
     var errorElement = errorTemplate.cloneNode(true);
     fragment.appendChild(errorElement);
     mainElement.appendChild(fragment);
 
     function onTryAgainClick() {
-      mainElement.removeChild(document.querySelector('.error'));
       document
         .querySelector('.error__button')
         .removeEventListener('click', onTryAgainClick);
+      mainElement.removeChild(document.querySelector('.error'));
     }
 
     document

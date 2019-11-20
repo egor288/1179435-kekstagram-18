@@ -4,13 +4,12 @@
   var oldposX;
   var oldleft;
   var selectedFilter;
-  var zoomBigElement = document.querySelector('.scale__control--bigger');
-  var zoomSmallElement = document.querySelector('.scale__control--smaller');
+
   var zoomValueElement = document.querySelector('.scale__control--value');
   zoomValueElement.value = 100 + '%';
 
-  zoomBigElement.addEventListener('click', onZoomPlusClick);
-  zoomSmallElement.addEventListener('click', onZoomMinusClick);
+  var deepOfEffect = document.querySelector('.effect-level__pin');
+  deepOfEffect.style.left = '453px';
 
   function convertValueToNum(str) {
     return parseInt(str.substr(0, str.length - 1), 10);
@@ -58,19 +57,25 @@
     previewImgElement.style.filter = changeFilter(selectedFilter, newpos);
   };
 
-  var deepOfEffect = document.querySelector('.effect-level__pin');
-  deepOfEffect.style.left = '0px';
+  function onFilterChange(evt) {
+    deepOfEffect.style.left = '453px';
+    var currentValue = evt.currentTarget.value;
+    currentValue = 'effect-' + currentValue;
+    previewImgElement.style.filter = changeFilter(
+        currentValue,
+        convertValueToNum(deepOfEffect.style.left)
+    );
+  }
 
-  deepOfEffect.addEventListener('mousedown', function (event) {
+  function onSliderMousedown(event) {
     oldposX = event.clientX;
     oldleft = deepOfEffect.style.left;
     selectedFilter = getInputWithValue();
     document.addEventListener('mousemove', moveListener, false);
-  });
-
-  document.addEventListener('mouseup', function () {
+  }
+  function onSliderMouseup() {
     document.removeEventListener('mousemove', moveListener, false);
-  });
+  }
 
   function getInputWithValue() {
     var inputs = document.querySelectorAll('.effects__radio');
@@ -84,7 +89,9 @@
   }
 
   function changeFilter(filterValue, sliderLeft) {
+    document.querySelector('.effect-level').classList.remove('hidden');
     if (filterValue === 'effect-none') {
+      document.querySelector('.effect-level').classList.add('hidden');
       return '';
     } else if (filterValue === 'effect-chrome') {
       return changeFilterChrome(sliderLeft);
@@ -119,6 +126,12 @@
   function changeFilterBritness(sliderLeft) {
     return 'brightness(' + ((sliderLeft / 453) * 2 + 1).toString() + ')';
   }
-
-  window.getInputWithValue = getInputWithValue;
+  window.filters = {
+    onSliderMouseup: onSliderMouseup,
+    onSliderMousedown: onSliderMousedown,
+    moveListener: moveListener,
+    onFilterChange: onFilterChange,
+    onZoomMinusClick: onZoomMinusClick,
+    onZoomPlusClick: onZoomPlusClick
+  };
 })();
